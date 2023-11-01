@@ -3,8 +3,6 @@ FROM node:16 as build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-# Installer Angular CLI globalement
-RUN npm install -g @angular/cli
 COPY . .
 RUN ng build --configuration=production
 
