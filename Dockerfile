@@ -1,23 +1,14 @@
-# Use an official Node.js runtime as a parent image
+# Étape 1 : Builder l'application
 FROM node:16 as build
-
-# Set the working directory
 WORKDIR /app
-
-# Copy package.json and package-lock.json
 COPY package*.json ./
-
-# Install project dependencies
 RUN npm install
-
-# Copy the rest of the application code
+# Installer Angular CLI globalement
+RUN npm install -g @angular/cli
 COPY . .
+RUN ng build --configuration=production
 
-# Build the Angular app
-RUN npm run build
-
-# Create the final lightweight image
+# Étape 2 : Utiliser une image NGINX pour servir l'application
 FROM nginx:alpine
-
-# Copy the built app to the nginx web server directory
 COPY --from=build /app/dist/* /usr/share/nginx/html/
+CMD ["nginx", "-g", "daemon off;"]
