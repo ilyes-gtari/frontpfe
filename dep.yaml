@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: front
-        image: karma12/front-elboss
+        image: 23153122e351/front:v3
         ports:
         - containerPort: 80  # Port sur lequel le conteneur écoute
 ---
@@ -29,4 +29,5 @@ spec:
   - protocol: TCP
     port: 80  # Port du service
     targetPort: 80  # Port sur lequel les pods du déploiement écoute
+    nodePort: 30685  # Port NodePort
   type: NodePort  # Type de service (ClusterIP, NodePort, LoadBalancer, etc.)
