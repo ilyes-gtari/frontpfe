@@ -1,13 +1,30 @@
-# Étape 1 : Builder l'application
-FROM node:16 as build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --force
-RUN npm install -g @angular/cli --force
-COPY . .
-RUN ng build --configuration=production
+# Étape de construction
+FROM node:18.13 as build
 
-# Étape 2 : Utiliser une image NGINX pour servir l'application
-FROM nginx:alpine
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers de dépendances du package.json et du package-lock.json
+COPY package*.json ./
+
+# Installer les dépendances
+RUN npm install --force
+
+# Copier le reste des fichiers de l'application
+COPY . .
+
+# Construire l'application Angular
+RUN npm run build
+
+# Étape de production
+FROM nginx:latest
+
+# Copier les fichiers de construction de l'étape de construction vers le répertoire d'accueil de Nginx
 COPY --from=build /app/dist/* /usr/share/nginx/html/
+
+# Exposer le port 80 pour accéder à l'application
+EXPOSE 80
+
+# Commande par défaut pour démarrer Nginx
 CMD ["nginx", "-g", "daemon off;"]
+
