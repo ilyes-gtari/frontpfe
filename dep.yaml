@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: front
-        image: 23153122e351/teeeeeeeeeest:v1
+        image: 23153122e351/aaaaaaaaaaaaaaaaaa
         ports:
         - containerPort: 80  # Port sur lequel le conteneur écoute
 ---
